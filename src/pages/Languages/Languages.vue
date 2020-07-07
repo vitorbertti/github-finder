@@ -14,4 +14,8 @@ export default {
 .container {
    text-align: center;
 }
+
+h1 {
+   color: var(--primary-color);
+}
 </style>

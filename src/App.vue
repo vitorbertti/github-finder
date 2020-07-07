@@ -22,14 +22,12 @@ export default {
    padding: 0;
    box-sizing: border-box;
 }
+
 *,
 button,
 input {
    border: 0;
    outline: 0;
    font-family: 'Roboto', sans-serif;
-}
-body {
-   background: #f0f0f5;
 }
 </style>
