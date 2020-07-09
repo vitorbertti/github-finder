@@ -30,4 +30,9 @@ input {
    outline: 0;
    font-family: 'Roboto', sans-serif;
 }
+
+.link-table {
+   text-decoration: none;
+   color: #3c8ce7;
+}
 </style>

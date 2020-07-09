@@ -6,7 +6,7 @@
       <input v-model="input" type="text" placeholder="GitHub Login">
       <button class="button" type="button" @click="findUser()">Search</button> 
          <div class="users-list" v-for="user in users" :key="user.login">
-         <router-link to="#"><img :src="user.avatar_url" :alt="user.avatar_url"/></router-link>
+         <router-link :to="{ name: 'user-info', params: { login: user.login } , path: user.login }" ><img :src="user.avatar_url" :alt="user.avatar_url"/></router-link>
          <strong>{{user.name}}</strong>
          <table>
             <tr>
@@ -15,7 +15,7 @@
             </tr>
             <tr v-if="user.repos_url">
                <th>Repositories</th>
-               <router-link to="user.repos_url"><td>{{user.repos_url}}</td></router-link>
+               <router-link class="link-table" :to="user.repos_url"><td>Repositories</td></router-link>
             </tr>
          </table>
       </div>
