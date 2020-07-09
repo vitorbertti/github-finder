@@ -4,34 +4,18 @@
          <h1>Finder</h1>
       </header>
       <input v-model="input" type="text" placeholder="GitHub Login">
-      <button class="button" type="button" @click="findUser()">Search</button>
-      <div class="user-data" v-if="user">
-         <img :src="user.avatar_url" :alt="user.avatar_url"/>
+      <button class="button" type="button" @click="findUser()">Search</button> 
+         <div class="users-list" v-for="user in users" :key="user.login">
+         <router-link to="#"><img :src="user.avatar_url" :alt="user.avatar_url"/></router-link>
          <strong>{{user.name}}</strong>
          <table>
             <tr>
                <th>Login</th>
                <td>{{user.login}}</td>
             </tr>
-            <tr v-if="user.email">
-               <th>Email</th>
-               <td>{{user.email}}</td>
-            </tr>
-            <tr v-if="user.bio">
-               <th>Bio</th>
-               <td>{{user.bio}}</td>
-            </tr>
-            <tr v-if="user.company">
-               <th>Company</th>
-               <td>{{user.company}}</td>
-            </tr>
-            <tr v-if="user.location">
-               <th>Location</th>
-               <td>{{user.location}}</td>
-            </tr>
             <tr v-if="user.repos_url">
                <th>Repositories</th>
-               <td>{{user.repos_url}}</td>
+               <router-link to="user.repos_url"><td>{{user.repos_url}}</td></router-link>
             </tr>
          </table>
       </div>
@@ -46,13 +30,13 @@ export default {
    data() {
       return {
          input: '',
-         user: null,
+         users: [],
       }
    },
    methods: {
       findUser() {
-         axios.get(`https://api.github.com/users/${this.input}`)
-            .then(response => (this.user = response.data));
+         axios.get(`https://api.github.com/search/users?q=${this.input}`)
+            .then(response => (this.users = response.data.items));
       }
    },
 };
@@ -79,7 +63,7 @@ input {
    background: var(--card-color);
 }
 
-.user-data {
+.users-list {
    display: flex;
    flex-direction: column;
    justify-content: center;
