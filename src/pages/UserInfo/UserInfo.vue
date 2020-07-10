@@ -1,7 +1,7 @@
 <template>
   <div class="container">
       <div class="user-data" v-if="user">
-         <img :src="user.avatar_url" :alt="user.avatar_url"/>
+         <a :href="link" target="_blank" class="img-link"><img :src="user.avatar_url" :alt="user.avatar_url"/></a>
          <strong>{{user.name}}</strong>
          <table>
             <tr v-if="user.email">
@@ -20,9 +20,11 @@
                <th>Location</th>
                <td>{{user.location}}</td>
             </tr>
-            <tr v-if="user.repos_url">
-               <th>Repositories</th>
-               <router-link class="link-table" :to="user.repos_url"><td>Repositories</td></router-link>
+            <tr >
+               <th id="repoLabel">Repositories</th>
+               <button id="repoLink" class="button-link"  @click="findRepos()"><td>Repositories</td></button>
+            </tr>
+            <tr is="Repositories" :repository="repository" v-for="repository in repositories" :key="repository.id">
             </tr>
          </table>
       </div>
@@ -31,20 +33,29 @@
 
 <script>
 import axios from 'axios';
+import Repositories from './Repositories'
 
 export default {
    name: 'UserInfo',
    props: ['login'],
+   components: {
+      Repositories,
+   },
    data() {
       return {
          repositories: [],
          user: null,
+         link: `https://github.com/${this.login}`,
       }
    },
    methods: {
       findRepos() {
-         axios.get(`https://api.github.com/users/${this.input}/repos`)
-            .then(response => (this.repositories = response.data.items));
+         axios.get(`https://api.github.com/users/${this.login}/repos?per_page=100`)
+            .then(response => {
+               this.repositories = response.data;
+               document.querySelector('#repoLink').hidden = true;
+            });
+         
       }
    },
    created() {
@@ -55,11 +66,24 @@ export default {
 </script>
 
 <style scoped>
+.img-link {
+   text-align: center;
+}
+
 .user-data {
    display: flex;
    flex-direction: column;
    justify-content: center;
    color: var(--primary-color);
+}
+
+.button-link {
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  color: #3c8ce7;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 strong {
