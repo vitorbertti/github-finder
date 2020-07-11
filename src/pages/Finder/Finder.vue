@@ -3,19 +3,26 @@
       <header>
          <h1>Finder</h1>
       </header>
-      <input v-model="input" type="text" placeholder="GitHub Login">
-      <button class="button" type="button" @click="findUser()">Search</button> 
-         <div class="users-list" v-for="user in users" :key="user.login">
-         <router-link :to="{ name: 'user-info', params: { login: user.login } , path: user.login }" ><img :src="user.avatar_url" :alt="user.avatar_url"/></router-link>
-         <strong>{{user.name}}</strong>
+      <input v-model="input" type="text" placeholder="GitHub Login" />
+      <button class="button" type="button" @click="findUser()">Search</button>
+      <div class="users-list" v-for="user in users" :key="user.login">
+         <router-link
+            :to="{ name: 'user-info', params: { login: user.login, repos: null }, path: user.login }"
+            ><img :src="user.avatar_url" :alt="user.avatar_url"
+         /></router-link>
+         <strong>{{ user.name }}</strong>
          <table>
             <tr>
                <th>Login</th>
-               <td>{{user.login}}</td>
+               <td>{{ user.login }}</td>
             </tr>
             <tr v-if="user.repos_url">
                <th>Repositories</th>
-               <router-link class="link-table" :to="user.repos_url"><td>Repositories</td></router-link>
+               <router-link
+                  class="link-table"
+                  :to="{ name: 'user-info', params: { login: user.login, repos: 'repos' }, path: user.login }"
+                  ><td>Repositories</td></router-link
+               >
             </tr>
          </table>
       </div>
@@ -31,13 +38,27 @@ export default {
       return {
          input: '',
          users: [],
-      }
+      };
    },
    methods: {
       findUser() {
-         axios.get(`https://api.github.com/search/users?q=${this.input}`)
-            .then(response => (this.users = response.data.items));
+         if (this.input) {
+            axios.get(`https://api.github.com/search/users?q=${this.input}`).then((response) => {
+               this.users = response.data.items;
+            });
+         }
+      },
+   },
+   mounted() {
+      if (localStorage.input) {
+         this.input = localStorage.input;
+         this.findUser();
       }
+   },
+   watch: {
+      input(newInput) {
+         localStorage.input = newInput;
+      },
    },
 };
 </script>
@@ -79,17 +100,20 @@ img {
 }
 
 table {
-  border-collapse: collapse;
-  margin: 30px auto;
-  color: var(--primary-color);
+   border-collapse: collapse;
+   margin: 30px auto;
+   color: var(--primary-color);
 }
 
-th, td {
-  text-align: left;
-  padding: 8px 40px;
+th,
+td {
+   text-align: left;
+   padding: 8px 40px;
 }
 
-tr:nth-child(even) {background-color: var(--card-color);}
+tr:nth-child(even) {
+   background-color: var(--card-color);
+}
 
 .button {
    cursor: pointer;
