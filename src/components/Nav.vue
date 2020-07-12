@@ -12,7 +12,7 @@
                <input type="checkbox" id="checkbox" @change="themeChange" />
                <div class="slider round"></div>
             </label>
-            <img :src="draculaLogo" alt="dracula logo" />
+            <img class="dracula" :src="draculaLogo" alt="dracula logo" />
       </div>
    </nav>
 </template>

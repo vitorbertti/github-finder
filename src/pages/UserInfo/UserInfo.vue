@@ -1,8 +1,8 @@
 <template>
    <div class="container" v-if="!repos">
-      <div class="user-data" v-if="user">
+      <div class="data" v-if="user">
          <a :href="link" target="_blank" class="img-link"
-            ><img :src="user.avatar_url" :alt="user.avatar_url"
+            ><img class="profile" :src="user.avatar_url" :alt="user.avatar_url"
          /></a>
          <strong>{{ user.name }}</strong>
          <table>
@@ -90,17 +90,6 @@ export default {
 </script>
 
 <style scoped>
-.img-link {
-   text-align: center;
-}
-
-.user-data {
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   color: var(--primary-color);
-}
-
 .button-link {
    background: none !important;
    border: none;
@@ -108,33 +97,5 @@ export default {
    color: #3c8ce7;
    cursor: pointer;
    font-size: 16px;
-}
-
-strong {
-   text-align: center;
-}
-
-img {
-   height: 200px;
-   width: 200px;
-   margin: auto;
-   padding: 12px;
-   border-radius: 50%;
-}
-
-table {
-   border-collapse: collapse;
-   margin: 30px auto;
-   color: var(--primary-color);
-}
-
-th,
-td {
-   text-align: left;
-   padding: 8px 40px;
-}
-
-tr:nth-child(even) {
-   background-color: var(--card-color);
 }
 </style>

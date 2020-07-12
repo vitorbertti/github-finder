@@ -1,14 +1,14 @@
 <template>
    <div class="container">
       <header>
-         <h1>Finder</h1>
+         <h1 class="title">Finder</h1>
       </header>
-      <input v-model="input" type="text" placeholder="GitHub Login" />
+      <input class="search" v-model="input" type="text" placeholder="GitHub Login" />
       <button class="button" type="button" @click="findUser()">Search</button>
-      <div class="users-list" v-for="user in users" :key="user.login">
-         <router-link
+      <div class="data" v-for="user in users" :key="user.login">
+         <router-link class="img-link"
             :to="{ name: 'user-info', params: { login: user.login, repos: null }, path: user.login }"
-            ><img :src="user.avatar_url" :alt="user.avatar_url"
+            ><img class="profile" :src="user.avatar_url" :alt="user.avatar_url"
          /></router-link>
          <strong>{{ user.name }}</strong>
          <table>
@@ -60,78 +60,10 @@ export default {
          localStorage.input = newInput;
       },
    },
+   beforeDestroy() {
+      console.log('Mounted destroyed')
+  }
 };
 </script>
 
-<style scoped>
-.container {
-   text-align: center;
-}
-
-h1 {
-   color: var(--primary-color);
-}
-
-input {
-   width: 200px;
-   height: 40px;
-   color: var(--primary-color);
-   border: 1px solid var(--secondary-color);
-   border-radius: 8px;
-   padding: 0 16px;
-   margin-top: 10px;
-   margin-bottom: 20px;
-   background: var(--card-color);
-}
-
-.users-list {
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   color: var(--primary-color);
-}
-
-img {
-   height: 200px;
-   width: 200px;
-   margin: auto;
-   padding: 12px;
-   border-radius: 50%;
-}
-
-table {
-   border-collapse: collapse;
-   margin: 30px auto;
-   color: var(--primary-color);
-}
-
-th,
-td {
-   text-align: left;
-   padding: 8px 40px;
-}
-
-tr:nth-child(even) {
-   background-color: var(--card-color);
-}
-
-.button {
-   cursor: pointer;
-   margin-left: 6px;
-   width: 70px;
-   height: 40px;
-   background: #e02041;
-   border: 0;
-   border-radius: 8px;
-   color: #fff;
-   font-weight: 700;
-   display: inline-block;
-   text-align: center;
-   text-decoration: none;
-   transition: filter 0.2s;
-}
-
-.button:hover {
-   filter: brightness(90%);
-}
-</style>
+<style scoped></style>
